@@ -2,12 +2,13 @@ import { Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
 import { formatINR, addToCart, toggleWishlist, type Product } from "@/lib/cart";
 import { useWishlistIds } from "@/hooks/use-auth";
+import { resolveProductImage } from "@/lib/product-images";
 import { toast } from "sonner";
 
 export function ProductCard({ product }: { product: Product }) {
   const wish = useWishlistIds();
   const isWished = wish.includes(product.id);
-  const img = product.images?.[0];
+  const img = resolveProductImage(product.slug, product.images);
   return (
     <article className="group relative flex flex-col rounded-2xl bg-card border border-border/60 overflow-hidden hover:shadow-warm transition-all duration-300 hover:-translate-y-1">
       <Link to="/product/$slug" params={{ slug: product.slug }} className="block aspect-square overflow-hidden bg-secondary">
