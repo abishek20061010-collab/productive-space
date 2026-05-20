@@ -22,7 +22,7 @@ export const adminStats = createServerFn({ method: "GET" })
       supabaseAdmin.from("orders").select("*", { count: "exact", head: true }),
       supabaseAdmin.from("products").select("*", { count: "exact", head: true }).eq("is_active", true),
       supabaseAdmin.from("orders").select("*", { count: "exact", head: true }).eq("status", "pending"),
-      supabaseAdmin.from("orders").select("total").in("status", ["paid", "shipped", "delivered"]),
+      supabaseAdmin.from("orders").select("total").in("status", ["payment_verified", "shipped", "delivered"]),
     ]);
     const revenue = (revenueRows ?? []).reduce((s, r) => s + Number(r.total), 0);
     return { ordersCount: ordersCount ?? 0, productsCount: productsCount ?? 0, pendingCount: pendingCount ?? 0, revenue };
@@ -95,7 +95,7 @@ export const adminUpdateOrder = createServerFn({ method: "POST" })
   .inputValidator((input) =>
     z.object({
       id: z.string().uuid(),
-      status: z.enum(["pending", "paid", "shipped", "delivered", "cancelled"]),
+      status: z.enum(["pending", "payment_verified", "shipped", "delivered", "cancelled"]),
       admin_notes: z.string().trim().max(2000).optional().nullable(),
     }).parse(input),
   )
