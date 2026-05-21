@@ -54,37 +54,17 @@ function ProductPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <Link to="/shop" className="text-sm text-muted-foreground hover:text-foreground">← Back to shop</Link>
-      <div className="mt-6 grid md:grid-cols-2 gap-10 lg:gap-16">
+      <div className="mt-6 grid md:grid-cols-2 gap-8 md:gap-10 lg:gap-16">
         <div className="aspect-square rounded-2xl overflow-hidden bg-secondary border border-border/60">
           {img && <img src={img} alt={p.name} width={1024} height={1024} className="size-full object-cover" />}
         </div>
         <div>
-          <h1 className="font-display text-4xl lg:text-5xl">{p.name}</h1>
-          {avg > 0 && (
-            <div className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className={`size-4 ${i < Math.round(avg) ? "fill-clay text-clay" : ""}`} aria-hidden />
-              ))}
-              <span className="ml-1">({data.reviews.length})</span>
-            </div>
-          )}
-          <p className="mt-4 text-2xl font-semibold">{formatINR(Number(p.price))}</p>
-          <p className="text-sm text-muted-foreground">{p.unit}</p>
-          <p className="mt-6 text-base text-muted-foreground leading-relaxed">{p.description}</p>
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl">{p.name}</h1>
 
-          {p.certifications?.length > 0 && (
-            <div className="mt-5 flex flex-wrap gap-2">
-              {p.certifications.map((c) => (
-                <span key={c} className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-leaf/10 text-leaf text-xs">
-                  <Leaf className="size-3" aria-hidden /> {c}
-                </span>
-              ))}
-            </div>
-          )}
 
-          <div className="mt-8 flex items-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <div className="flex items-center border border-border rounded-full overflow-hidden">
               <button onClick={() => setQty(Math.max(1, qty - 1))} aria-label="Decrease quantity" className="px-4 py-3 hover:bg-secondary">−</button>
               <span className="px-4 text-sm font-medium min-w-10 text-center">{qty}</span>
@@ -93,7 +73,7 @@ function ProductPage() {
             <button
               onClick={() => { addToCart(p, qty); toast.success("Added to cart"); }}
               disabled={p.stock === 0}
-              className="flex-1 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 disabled:opacity-50"
+              className="flex-1 min-w-[160px] px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 disabled:opacity-50"
             >
               {p.stock === 0 ? "Sold out" : "Add to cart"}
             </button>
@@ -101,7 +81,7 @@ function ProductPage() {
               onClick={() => { toggleWishlist(p.id); toast.success(isWished ? "Removed from wishlist" : "Saved to wishlist"); }}
               aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
               aria-pressed={isWished}
-              className="grid place-items-center size-12 rounded-full border border-border hover:bg-secondary"
+              className="grid place-items-center size-12 rounded-full border border-border hover:bg-secondary shrink-0"
             >
               <Heart className={`size-5 ${isWished ? "fill-leaf text-leaf" : ""}`} aria-hidden />
             </button>

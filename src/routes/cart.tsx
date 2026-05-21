@@ -114,39 +114,40 @@ function Cart() {
   if (loading) return null;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="font-display text-5xl mb-8">Your cart</h1>
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <h1 className="font-display text-4xl sm:text-5xl mb-6 sm:mb-8">Your cart</h1>
       {items.length === 0 ? (
         <div className="text-center py-20">
           <p className="text-muted-foreground">Your cart is empty.</p>
           <Link to="/shop" className="inline-block mt-6 px-6 py-3 rounded-full bg-primary text-primary-foreground">Browse the harvest</Link>
         </div>
       ) : (
-        <div className="grid lg:grid-cols-3 gap-10">
+        <div className="grid lg:grid-cols-3 gap-8 lg:gap-10">
           <ul className="lg:col-span-2 space-y-4">
             {items.map((i) => {
               const img = resolveProductImage(i.slug, i.image ? [i.image] : []);
               return (
-                <li key={i.product_id} className="flex gap-4 p-4 rounded-2xl bg-card border border-border/60">
-                  <Link to="/product/$slug" params={{ slug: i.slug }} className="shrink-0 size-24 rounded-xl overflow-hidden bg-secondary">
+                <li key={i.product_id} className="flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-2xl bg-card border border-border/60">
+                  <Link to="/product/$slug" params={{ slug: i.slug }} className="shrink-0 size-20 sm:size-24 rounded-xl overflow-hidden bg-secondary">
                     {img && <img src={img} alt={i.name} width={200} height={200} className="size-full object-cover" />}
                   </Link>
-                  <div className="flex-1 min-w-0">
-                    <Link to="/product/$slug" params={{ slug: i.slug }} className="font-display text-lg hover:text-leaf">{i.name}</Link>
-                    <p className="text-xs text-muted-foreground">{i.unit}</p>
-                    <p className="mt-1 font-medium">{formatINR(i.price)}</p>
-                    <div className="mt-2 flex items-center gap-3">
+                  <div className="flex-1 min-w-0 flex flex-col">
+                    <div className="flex justify-between gap-2">
+                      <Link to="/product/$slug" params={{ slug: i.slug }} className="font-display text-base sm:text-lg hover:text-leaf truncate">{i.name}</Link>
+                      <span className="font-semibold whitespace-nowrap">{formatINR(i.price * i.quantity)}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">{i.unit} · {formatINR(i.price)}</p>
+                    <div className="mt-auto pt-2 flex items-center justify-between gap-3">
                       <div className="flex items-center border border-border rounded-full overflow-hidden text-sm">
                         <button aria-label="Decrease" onClick={() => { setQty(i.product_id, i.quantity - 1); setItems(loadCart()); }} className="px-3 py-1 hover:bg-secondary">−</button>
                         <span className="px-3">{i.quantity}</span>
                         <button aria-label="Increase" onClick={() => { setQty(i.product_id, i.quantity + 1); setItems(loadCart()); }} className="px-3 py-1 hover:bg-secondary">+</button>
                       </div>
-                      <button aria-label="Remove" onClick={() => { removeFromCart(i.product_id); setItems(loadCart()); }} className="text-muted-foreground hover:text-destructive">
+                      <button aria-label="Remove" onClick={() => { removeFromCart(i.product_id); setItems(loadCart()); }} className="text-muted-foreground hover:text-destructive p-2">
                         <Trash2 className="size-4" />
                       </button>
                     </div>
                   </div>
-                  <div className="text-right font-semibold">{formatINR(i.price * i.quantity)}</div>
                 </li>
               );
             })}

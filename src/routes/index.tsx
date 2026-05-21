@@ -32,20 +32,20 @@ function Home() {
     <>
       {/* HERO */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-20 lg:pt-20 lg:pb-32 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          <div className="space-y-7">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-20 lg:pb-32 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="space-y-5 sm:space-y-7 text-center lg:text-left">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-leaf/10 text-leaf text-xs font-medium tracking-wide uppercase">
               <Sprout className="size-3.5" aria-hidden /> Family farm · Tamil Nadu
             </span>
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.05] text-balance">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] text-balance">
               From our farm,<br />
               <span className="italic text-leaf">picked fresh</span><br />
               for your home.
             </h1>
-            <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto lg:mx-0 leading-relaxed">
               Pure organic leaves, herbs, and natural produce — grown without pesticides and delivered with care.
             </p>
-            <div className="flex flex-wrap gap-3 pt-2">
+            <div className="flex flex-wrap justify-center lg:justify-start gap-3 pt-2">
               <Link to="/shop" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors">
                 Shop the harvest <ArrowRight className="size-4" aria-hidden />
               </Link>
@@ -54,9 +54,9 @@ function Home() {
               </Link>
             </div>
           </div>
-          <div className="relative">
-            <div className="absolute -inset-4 bg-clay/30 rounded-3xl -rotate-2" aria-hidden />
-            <img src={hero} alt="Hands holding fresh organic leaves on a farm table" width={1600} height={1000} className="relative rounded-2xl shadow-warm aspect-[4/3] object-cover" />
+          <div className="relative order-first lg:order-last">
+            <div className="absolute -inset-3 sm:-inset-4 bg-clay/30 rounded-3xl -rotate-2" aria-hidden />
+            <img src={hero} alt="Hands holding fresh organic leaves on a farm table" width={1600} height={1000} className="relative rounded-2xl shadow-warm aspect-[4/3] object-cover w-full" />
           </div>
         </div>
       </section>
