@@ -48,11 +48,11 @@ export const listCategories = createServerFn({ method: "GET" }).handler(async ()
 export const validateCoupon = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ code: z.string().min(1).max(40), subtotal: z.number().min(0) }).parse(input))
-  .handler(async ({ data, context }) => {
-    const { supabase } = context;
-    const { data: coupon, error } = await supabase
+  .handler(async ({ data }) => {
+    // Use admin client so customers cannot enumerate coupons via direct table reads.
+    const { data: coupon, error } = await supabaseAdmin
       .from("coupons")
-      .select("*")
+      .select("code, type, value, expires_at, max_uses, current_uses, is_active")
       .eq("code", data.code.toUpperCase())
       .eq("is_active", true)
       .maybeSingle();
