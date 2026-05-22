@@ -98,21 +98,20 @@ export function SiteHeader() {
         <div className="md:hidden border-t border-border/60 bg-background/95 backdrop-blur">
           <nav className="px-4 py-4 flex flex-col gap-1 text-sm">
             {[
-              { to: "/", label: "Home" },
-              { to: "/shop", label: "Shop" },
+              { to: "/#home", label: "Home" },
+              { to: "/#shop", label: "Shop" },
+              { to: "/#about", label: "About" },
+              { to: "/#contact", label: "Contact" },
               { to: "/wishlist", label: "Wishlist" },
-              { to: "/about", label: "About" },
-              { to: "/contact", label: "Contact" },
             ].map((l) => (
-              <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="py-3 px-2 rounded hover:bg-secondary">
+              <a key={l.to} href={l.to} onClick={() => setOpen(false)} className="py-3 px-2 rounded hover:bg-secondary">
                 {l.label}
-              </Link>
+              </a>
             ))}
             {user ? (
               <>
                 {isAdmin && <Link to="/admin" onClick={() => setOpen(false)} className="py-3 px-2 rounded hover:bg-secondary">Admin</Link>}
                 <Link to="/account" onClick={() => setOpen(false)} className="py-3 px-2 rounded hover:bg-secondary">My Account</Link>
-                <Link to="/orders" onClick={() => setOpen(false)} className="py-3 px-2 rounded hover:bg-secondary">My Orders</Link>
                 <button onClick={() => { setOpen(false); logout(); }} className="text-left py-3 px-2 rounded hover:bg-secondary">Sign out</button>
               </>
             ) : (
