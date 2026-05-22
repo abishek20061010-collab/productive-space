@@ -47,6 +47,9 @@ export function SiteHeader() {
         <nav className="hidden md:flex items-center gap-8 text-sm">
           <Link to="/" className="hover:text-leaf transition-colors" activeOptions={{ exact: true }} activeProps={{ className: "text-leaf" }}>Home</Link>
           <Link to="/shop" className="hover:text-leaf transition-colors" activeProps={{ className: "text-leaf" }}>Shop</Link>
+          {user && (
+            <Link to="/orders" className="hover:text-leaf transition-colors" activeProps={{ className: "text-leaf" }}>Orders</Link>
+          )}
           <Link to="/about" className="hover:text-leaf transition-colors" activeProps={{ className: "text-leaf" }}>About</Link>
           <Link to="/contact" className="hover:text-leaf transition-colors" activeProps={{ className: "text-leaf" }}>Contact</Link>
         </nav>
