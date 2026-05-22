@@ -3,7 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { listProducts, listCategories } from "@/lib/shop.functions";
 import { ProductCard } from "@/components/product-card";
 import hero from "@/assets/hero.jpg";
-import { ArrowRight, Leaf, Sprout, Heart } from "lucide-react";
+import { ArrowRight, Leaf, Sprout, Heart, Camera, Package, Truck, ShieldCheck, ShoppingBag } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -106,6 +106,63 @@ function Home() {
           </div>
         </section>
       )}
+
+      {/* LIVE ORDER TRACKING / TRUST */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+        <div className="rounded-3xl bg-leaf/5 border border-leaf/20 p-6 sm:p-10">
+          <div className="max-w-2xl">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-leaf/15 text-leaf text-xs font-medium uppercase tracking-wider">
+              <ShieldCheck className="size-3.5" aria-hidden /> Trust & transparency
+            </span>
+            <h2 className="font-display text-3xl sm:text-4xl mt-4">
+              Watch your order travel — <span className="italic text-leaf">live on WhatsApp.</span>
+            </h2>
+            <p className="mt-3 text-muted-foreground leading-relaxed">
+              We believe trust is built one photo at a time. From the moment your leaves are picked
+              to the second they're handed to the courier, we send you real photos with the date
+              and time stamp — straight to your WhatsApp.
+            </p>
+          </div>
+          <div className="mt-8 grid sm:grid-cols-3 gap-4">
+            {[
+              { icon: Camera, title: "Picked", body: "A photo of your fresh leaves the moment we harvest them from the farm." },
+              { icon: Package, title: "Packed", body: "Sealed and labelled with care — we share a packing photo with a timestamp." },
+              { icon: Truck, title: "Sent", body: "Courier receipt and dispatch photo so you know exactly when it's on the way." },
+            ].map((s) => (
+              <div key={s.title} className="p-5 rounded-2xl bg-card border border-border/60">
+                <span className="grid place-items-center size-10 rounded-full bg-leaf/15 text-leaf"><s.icon className="size-5" aria-hidden /></span>
+                <h3 className="mt-3 font-display text-lg">{s.title}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{s.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ALSO AVAILABLE ON */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+            <ShoppingBag className="size-3.5" aria-hidden /> Also available on
+          </span>
+          <h2 className="font-display text-3xl sm:text-4xl mt-3">Trusted across marketplaces</h2>
+          <p className="mt-2 text-muted-foreground max-w-xl mx-auto">
+            Find Jaya's Organic Products on India's leading e-commerce platforms.
+          </p>
+        </div>
+        <div className="mt-8 grid grid-cols-3 gap-3 sm:gap-6 max-w-3xl mx-auto">
+          {[
+            { name: "Amazon", status: "Available now" },
+            { name: "Flipkart", status: "Coming soon" },
+            { name: "Meesho", status: "Coming soon" },
+          ].map((m) => (
+            <div key={m.name} className="p-4 sm:p-6 rounded-2xl bg-card border border-border/60 text-center">
+              <div className="font-display text-xl sm:text-2xl">{m.name}</div>
+              <div className="mt-1 text-xs text-muted-foreground">{m.status}</div>
+            </div>
+          ))}
+        </div>
+      </section>
     </>
   );
 }
