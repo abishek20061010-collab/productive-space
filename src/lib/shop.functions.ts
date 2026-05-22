@@ -118,10 +118,12 @@ export const createOrder = createServerFn({ method: "POST" })
 
     let discount = 0;
     let coupon_code: string | null = null;
+    let pending_coupon: string | null = null;
     if (data.coupon_code && data.coupon_code.trim()) {
-      const { data: coupon } = await supabase
+      // Read coupons via admin client (not exposed to authenticated role).
+      const { data: coupon } = await supabaseAdmin
         .from("coupons")
-        .select("*")
+        .select("code, type, value, expires_at, max_uses, current_uses, is_active")
         .eq("code", data.coupon_code.toUpperCase())
         .eq("is_active", true)
         .maybeSingle();
@@ -132,8 +134,24 @@ export const createOrder = createServerFn({ method: "POST" })
           discount = coupon.type === "percent"
             ? Math.round(subtotal * (Number(coupon.value) / 100))
             : Math.min(Number(coupon.value), subtotal);
-          coupon_code = coupon.code;
+          pending_coupon = coupon.code;
         }
+      }
+    }
+
+    // Atomically redeem the coupon BEFORE creating the order to avoid races
+    // where two checkouts both pass the max_uses check.
+    if (pending_coupon) {
+      const { data: redeemed, error: rErr } = await supabaseAdmin.rpc("redeem_coupon", {
+        _code: pending_coupon,
+      });
+      if (rErr) throw new Error(rErr.message);
+      if (redeemed === true) {
+        coupon_code = pending_coupon;
+      } else {
+        // Lost the race or just hit the cap; drop the discount.
+        discount = 0;
+        coupon_code = null;
       }
     }
 
@@ -157,15 +175,6 @@ export const createOrder = createServerFn({ method: "POST" })
       .select("id, order_number, total, items, subtotal, discount, coupon_code, customer_name, customer_phone, shipping_address")
       .single();
     if (oErr) throw new Error(oErr.message);
-
-    // Increment coupon usage (best-effort, admin)
-    if (coupon_code) {
-      await supabaseAdmin.rpc as unknown;
-      const { data: c } = await supabaseAdmin.from("coupons").select("current_uses").eq("code", coupon_code).maybeSingle();
-      if (c) {
-        await supabaseAdmin.from("coupons").update({ current_uses: (c.current_uses ?? 0) + 1 }).eq("code", coupon_code);
-      }
-    }
 
     const ownerNumber = (process.env.OWNER_WHATSAPP_NUMBER ?? "").replace(/[^0-9]/g, "");
 
